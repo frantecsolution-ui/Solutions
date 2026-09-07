@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Contact Message</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f1f5f9;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #0f172a;
+      }
+      table {
+        border-spacing: 0;
+        width: 100%;
+      }
+      img {
+        border: 0;
+      }
+      .wrapper {
+        width: 100%;
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .header {
+        background: linear-gradient(135deg, #0c4a6e 0%, #155e8c 55%, #0e7490 100%);
+        padding: 30px 24px;
+      }
+      .brand {
+        font-size: 26px;
+        line-height: 1.2;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: -0.02em;
+      }
+      .tag {
+        display: inline-block;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.26);
+        border-radius: 999px;
+        padding: 8px 14px;
+        color: #e2e8f0;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .content {
+        background: #ffffff;
+        padding: 28px 24px;
+      }
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #ea580c;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      h1 {
+        margin: 0 0 18px;
+        font-size: 28px;
+        line-height: 1.25;
+        color: #0c4a6e;
+      }
+      .info-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 18px 20px;
+      }
+      .label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .value {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #0f172a;
+        margin-top: 6px;
+        margin-bottom: 14px;
+      }
+      .message {
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        border-radius: 12px;
+        padding: 18px 20px;
+        color: #0f172a;
+        line-height: 1.7;
+        font-size: 15px;
+      }
+      .footer {
+        background: #0c4a6e;
+        padding: 22px 24px 26px;
+        color: #e2e8f0;
+      }
+      .footer a {
+        color: #fdba74;
+        text-decoration: none;
+      }
+      .small {
+        font-size: 12px;
+        line-height: 1.65;
+        color: #cbd5e1;
+      }
+      @media (max-width: 620px) {
+        .wrapper {
+          width: 100% !important;
+        }
+        .header, .content, .footer {
+          padding-left: 18px !important;
+          padding-right: 18px !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display:none; max-height:0; overflow:hidden; opacity:0; mso-hide:all;">
+      New message from your website
+    </div>
+
+    <table role="presentation" class="wrapper" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="header">
+          <div class="brand">Franktec – AD Solutions</div>
+          <div class="tag">New website enquiry</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="content">
+          <div class="section-label">Contact form</div>
+          <h1>Someone just sent a message</h1>
+
+          <div class="info-box">
+            <div class="label">Name</div>
+            <div class="value">{{from_name}}</div>
+
+            <div class="label">Email</div>
+            <div class="value"><a href="mailto:{{from_email}}" style="color:#0c4a6e; text-decoration:none;">{{from_email}}</a></div>
+          </div>
+
+          <div style="height: 18px;"></div>
+
+          <div class="section-label">Message</div>
+          <div class="message">{{message}}</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="footer">
+          <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 8px;">Franktec – AD Solutions</div>
+          <div class="small">Marketing communications, print, branding, design, video and corporate support in Ghana.</div>
+          <div style="height: 10px;"></div>
+          <div class="small">Bubiashie, Accra · <a href="mailto:frantecsolution@gmail.com">frantecsolution@gmail.com</a></div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
