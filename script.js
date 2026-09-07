@@ -17,21 +17,28 @@ const EMAILJS_PUBLIC_KEY = "n8TmasFGAuxkGM7A7";
 const CONTACT_TEMPLATE_ID = "template_bvcmpcb";
 const QUOTE_TEMPLATE_ID = "template_ju9alz6";
 
-const fileToBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result;
-      if (typeof result === "string") {
-        const cleaned = result.includes(",") ? result.split(",")[1] : result;
-        resolve(cleaned);
-      } else {
-        reject(new Error("Could not read file."));
-      }
-    };
-    reader.onerror = () => reject(new Error("Could not read file."));
-    reader.readAsDataURL(file);
+// Replace with your actual Cloudinary cloud name and unsigned upload preset.
+const CLOUDINARY_CLOUD_NAME = "qwrep0gi";
+const CLOUDINARY_UPLOAD_PRESET = "Solutions";
+
+const uploadToCloudinary = async (file) => {
+  const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData,
   });
+
+  if (!response.ok) {
+    throw new Error("File upload failed. Please try again.");
+  }
+
+  const data = await response.json();
+  return data.secure_url;
+};
 
 if (window.emailjs) {
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -113,20 +120,22 @@ if (quoteForm && quoteStatus) {
       const fileInput = quoteForm.querySelector('input[type="file"]');
       const uploadedFile = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
 
+      let fileUrl = "No file attached";
+      if (uploadedFile) {
+        quoteStatus.textContent = "Uploading file...";
+        fileUrl = await uploadToCloudinary(uploadedFile);
+      }
+
       const templateParams = {
         name,
         email: email || "Not provided",
         serviceType,
         details: details || "No additional project details provided.",
         fileUpload: uploadedFile ? uploadedFile.name : "No file attached",
+        fileUrl,
       };
 
-      if (uploadedFile) {
-        templateParams.attachments = [{
-          filename: uploadedFile.name,
-          content: await fileToBase64(uploadedFile),
-        }];
-      }
+      quoteStatus.textContent = "Submitting...";
 
       await emailjs.send(EMAILJS_SERVICE_ID, QUOTE_TEMPLATE_ID, templateParams, {
         publicKey: EMAILJS_PUBLIC_KEY,
