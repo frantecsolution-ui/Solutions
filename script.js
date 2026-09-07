@@ -17,6 +17,22 @@ const EMAILJS_PUBLIC_KEY = "n8TmasFGAuxkGM7A7";
 const CONTACT_TEMPLATE_ID = "template_bvcmpcb";
 const QUOTE_TEMPLATE_ID = "template_ju9alz6";
 
+const fileToBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === "string") {
+        const cleaned = result.includes(",") ? result.split(",")[1] : result;
+        resolve(cleaned);
+      } else {
+        reject(new Error("Could not read file."));
+      }
+    };
+    reader.onerror = () => reject(new Error("Could not read file."));
+    reader.readAsDataURL(file);
+  });
+
 if (window.emailjs) {
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 }
@@ -103,8 +119,14 @@ if (quoteForm && quoteStatus) {
         serviceType,
         details: details || "No additional project details provided.",
         fileUpload: uploadedFile ? uploadedFile.name : "No file attached",
-        attachments: uploadedFile ? [uploadedFile] : [],
       };
+
+      if (uploadedFile) {
+        templateParams.attachments = [{
+          filename: uploadedFile.name,
+          content: await fileToBase64(uploadedFile),
+        }];
+      }
 
       await emailjs.send(EMAILJS_SERVICE_ID, QUOTE_TEMPLATE_ID, templateParams, {
         publicKey: EMAILJS_PUBLIC_KEY,
