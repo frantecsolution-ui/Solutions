@@ -235,6 +235,11 @@ a {
   padding: clamp(48px, 7vw, 72px) 0;
 }
 
+.section-compact {
+  padding-top: 28px;
+  padding-bottom: 36px;
+}
+
 .section-title {
   text-align: center;
   color: var(--primary);
