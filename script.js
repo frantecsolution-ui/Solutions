@@ -12,6 +12,15 @@ year.forEach((el) => {
   el.textContent = String(new Date().getFullYear());
 });
 
+const EMAILJS_SERVICE_ID = "service_di6n2qv";
+const EMAILJS_PUBLIC_KEY = "n8TmasFGAuxkGM7A7";
+const CONTACT_TEMPLATE_ID = "template_bvcmpcb";
+const QUOTE_TEMPLATE_ID = "template_ju9alz6";
+
+if (window.emailjs) {
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+
 const contactForm = document.querySelector("#contactForm");
 const contactStatus = document.querySelector("#contactStatus");
 
@@ -26,20 +35,27 @@ if (contactForm && contactStatus) {
       message: (formData.get("message") || "").toString().trim(),
     };
 
+    if (!payload.name || !payload.email || !payload.message) {
+      contactStatus.textContent = "Please complete all fields before submitting.";
+      contactStatus.style.color = "#d93025";
+      return;
+    }
+
     contactStatus.textContent = "Submitting...";
     contactStatus.style.color = "#0c4a6e";
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-
-      if (!response.ok || !result.ok) {
-        throw new Error(result.error || "Could not submit message.");
+      if (!window.emailjs) {
+        throw new Error("EmailJS is not available.");
       }
+
+      await emailjs.send(EMAILJS_SERVICE_ID, CONTACT_TEMPLATE_ID, {
+        from_name: payload.name,
+        from_email: payload.email,
+        message: payload.message,
+        reply_to: payload.email,
+        subject: "New contact message from Franktec website",
+      });
 
       contactStatus.textContent = "Message sent successfully.";
       contactStatus.style.color = "#0f9d58";
@@ -59,19 +75,28 @@ if (quoteForm && quoteStatus) {
     event.preventDefault();
 
     const formData = new FormData(quoteForm);
+    const name = (formData.get("name") || "").toString().trim();
+    const email = (formData.get("email") || "").toString().trim();
+    const serviceType = (formData.get("serviceType") || "").toString().trim();
+    const details = (formData.get("details") || "").toString().trim();
+
+    if (!name || !serviceType) {
+      quoteStatus.textContent = "Please complete the required fields before submitting.";
+      quoteStatus.style.color = "#d93025";
+      return;
+    }
+
     quoteStatus.textContent = "Submitting...";
     quoteStatus.style.color = "#0c4a6e";
 
     try {
-      const response = await fetch("/api/quote", {
-        method: "POST",
-        body: formData,
-      });
-      const result = await response.json();
-
-      if (!response.ok || !result.ok) {
-        throw new Error(result.error || "Could not submit quote request.");
+      if (!window.emailjs) {
+        throw new Error("EmailJS is not available.");
       }
+
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, QUOTE_TEMPLATE_ID, quoteForm, {
+        publicKey: EMAILJS_PUBLIC_KEY,
+      });
 
       quoteStatus.textContent = "Quote request sent successfully.";
       quoteStatus.style.color = "#0f9d58";
