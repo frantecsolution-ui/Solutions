@@ -374,29 +374,27 @@ a {
   color: var(--muted);
 }
 
-.value-grid {
+.belief-pledge-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  align-items: stretch;
 }
 
-.value-card {
-  background: linear-gradient(145deg, #fff 0%, var(--light) 100%);
+.belief-pledge-card {
+  background: rgba(255, 255, 255, 0.65);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem 1.35rem;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
 }
 
-.value-card h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
-  color: var(--primary);
-}
-
-.value-card p {
-  margin: 0;
-  font-size: 0.92rem;
-  color: var(--muted);
+.belief-pledge-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
 }
 
 .timeline {
@@ -664,10 +662,8 @@ footer {
     padding: 42px 0;
   }
 
-  .timeline-step {
-    grid-template-columns: 1fr;
-  }
-
+  .belief-pledge-grid,
+  .timeline-step,
   .value-grid,
   .edge-grid {
     grid-template-columns: 1fr;
