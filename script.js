@@ -94,7 +94,19 @@ if (quoteForm && quoteStatus) {
         throw new Error("EmailJS is not available.");
       }
 
-      await emailjs.sendForm(EMAILJS_SERVICE_ID, QUOTE_TEMPLATE_ID, quoteForm, {
+      const fileInput = quoteForm.querySelector('input[type="file"]');
+      const uploadedFile = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+
+      const templateParams = {
+        name,
+        email: email || "Not provided",
+        serviceType,
+        details: details || "No additional project details provided.",
+        fileUpload: uploadedFile ? uploadedFile.name : "No file attached",
+        attachments: uploadedFile ? [uploadedFile] : [],
+      };
+
+      await emailjs.send(EMAILJS_SERVICE_ID, QUOTE_TEMPLATE_ID, templateParams, {
         publicKey: EMAILJS_PUBLIC_KEY,
       });
 
